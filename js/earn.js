@@ -276,7 +276,7 @@
               href="task.html?id=${encodeURIComponent(task.id)}"
               class="btn"
             >
-              🚀 Open Task
+              🎁 Start & Earn
             </a>
 
           </div>

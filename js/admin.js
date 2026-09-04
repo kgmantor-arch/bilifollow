@@ -36,6 +36,7 @@
     document.getElementById("noticeForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("site_notice", { enabled: document.getElementById("noticeEnabled").checked, title: document.getElementById("noticeTitle").value.trim(), message: document.getElementById("noticeMessage").value.trim() }); });
     document.getElementById("footerNoticeForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("footer_notice", { enabled: document.getElementById("footerNoticeEnabled").checked, title: document.getElementById("footerNoticeTitle").value.trim(), message: document.getElementById("footerNoticeMessage").value.trim() }); });
     document.getElementById("footerForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("footer", { copyright: document.getElementById("footerCopyright").value.trim(), disclaimer: document.getElementById("footerDisclaimer").value.trim() }); });
+    document.getElementById("statsSettingsForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("site_stats", { manual: document.getElementById("statsManualEnabled").checked, users: Number(document.getElementById("statsUsers").value) || 0, activeTasks: Number(document.getElementById("statsActiveTasks").value) || 0, completedTasks: Number(document.getElementById("statsCompletedTasks").value) || 0 }); });
     document.getElementById("welcomeOfferForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("welcome_offer", { enabled: document.getElementById("welcomeOfferEnabled").checked, coins: Number(document.getElementById("welcomeOfferCoins").value), message: document.getElementById("welcomeOfferMessage").value.trim() }); });
     document.getElementById("homeForm").addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -73,7 +74,7 @@
       const { data, error } = await client.from("app_settings").select("key,value");
       if (error) throw error;
       const settings = Object.fromEntries(data.map(item => [item.key, item.value]));
-      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {}, welcome = settings.welcome_offer || { enabled: true, coins: 50 };
+      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {}, welcome = settings.welcome_offer || { enabled: true, coins: 50 }, stats = settings.site_stats || {};
       document.getElementById("noticeEnabled").checked = !!notice.enabled;
       document.getElementById("noticeTitle").value = notice.title || "";
       document.getElementById("noticeMessage").value = notice.message || "";
@@ -82,6 +83,10 @@
       document.getElementById("footerNoticeMessage").value = footerNotice.message || "";
       document.getElementById("footerCopyright").value = footer.copyright || "";
       document.getElementById("footerDisclaimer").value = footer.disclaimer || "";
+      document.getElementById("statsManualEnabled").checked = !!stats.manual;
+      document.getElementById("statsUsers").value = stats.users || 0;
+      document.getElementById("statsActiveTasks").value = stats.activeTasks || 0;
+      document.getElementById("statsCompletedTasks").value = stats.completedTasks || 0;
       document.getElementById("welcomeOfferEnabled").checked = welcome.enabled !== false;
       document.getElementById("welcomeOfferCoins").value = Number.isFinite(Number(welcome.coins)) ? Number(welcome.coins) : 50;
       document.getElementById("welcomeOfferMessage").value = welcome.message || "Welcome to BiliFollow! Your 50 free Coins are ready to use.";

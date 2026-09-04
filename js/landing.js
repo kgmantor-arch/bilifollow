@@ -13,6 +13,12 @@
       setLink("homePrimaryLink", page.primaryText, page.primaryUrl); setLink("homeSecondaryLink", page.secondaryText, page.secondaryUrl);
       setText("homeHowTitle", page.howTitle); setText("homeHowDescription", page.howDescription);
       setText("homeCtaTitle", page.ctaTitle); setText("homeCtaDescription", page.ctaDescription); setLink("homeCtaLink", page.ctaText, page.ctaUrl);
+      const metrics = await client.rpc("public_site_metrics");
+      if (metrics.data) {
+        setText("siteUsersCount", Number(metrics.data.users || 0).toLocaleString());
+        setText("siteActiveTasksCount", Number(metrics.data.activeTasks || 0).toLocaleString());
+        setText("siteCompletedTasksCount", Number(metrics.data.completedTasks || 0).toLocaleString());
+      }
     };
     document.head.appendChild(script);
   }

@@ -43,9 +43,9 @@ async function startDashboard() {
 
 
     if (!user) {
-
       window.showGuestPreview?.();
-
+      await loadDashboardMetrics(client);
+      await loadTopTasks(client, false);
       return;
     }
 
@@ -118,6 +118,9 @@ async function startDashboard() {
     ).textContent =
       profile.bilibili_url || "Not added";
 
+    await loadDashboardMetrics(client);
+    await loadTopTasks(client, true);
+
 
     document.getElementById(
       "logoutButton"
@@ -142,6 +145,30 @@ async function startDashboard() {
     );
   }
 }
+
+async function loadDashboardMetrics(client) {
+  const { data, error } = await client.rpc("dashboard_metrics");
+  if (error || !data) return;
+  const put = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = Number(value || 0).toLocaleString(); };
+  put("communityTaskCount", data.communityTasks);
+  put("completedTaskCount", data.userCompleted);
+  put("availableRewardCount", data.availableTasks);
+}
+
+async function loadTopTasks(client, signedIn) {
+  const list = document.getElementById("topTasksList");
+  if (!list) return;
+  const { data, error } = await client.rpc("public_list_top_tasks", { p_limit: 5 });
+  if (error) { list.innerHTML = '<p class="form-help">Top tasks are unavailable right now.</p>'; return; }
+  if (!data?.length) { list.innerHTML = '<p class="form-help">No active tasks are available right now. Please check back later.</p>'; return; }
+  list.innerHTML = data.map(task => {
+    const href = signedIn ? `task.html?id=${encodeURIComponent(task.id)}` : "login.html";
+    const label = signedIn ? "🎁 Start & Earn" : "🔐 Login to start";
+    return `<article class="bf-top-task-card"><div><span class="bf-task-gift">🎁</span><strong>${escapeHtml(task.title)}</strong><small>${escapeHtml(task.category || "Bilibili Follow")} · ${task.completed}/${task.target} completed</small></div><div class="bf-top-task-reward">🪙 ${Number(task.reward).toLocaleString()} Coins</div><a class="gift-task-button" href="${href}">${label}</a></article>`;
+  }).join("");
+}
+
+function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 
 
 document.addEventListener(

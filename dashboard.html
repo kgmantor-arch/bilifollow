@@ -10,9 +10,9 @@
   <main class="bf-dashboard">
     <section class="bf-stat-grid" aria-label="Account overview">
       <article class="bf-stat-card coin-stat"><span class="bf-stat-icon">🪙</span><div><small>Coins Balance</small><strong><span id="coinBalance">0</span></strong></div></article>
-      <article class="bf-stat-card"><span class="bf-stat-icon blue">👥</span><div><small>Community</small><strong>Tasks</strong></div></article>
-      <article class="bf-stat-card"><span class="bf-stat-icon green">✅</span><div><small>Completed</small><strong>0</strong></div></article>
-      <article class="bf-stat-card"><span class="bf-stat-icon purple">🎁</span><div><small>Rewards</small><strong>0</strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon blue">👥</span><div><small>Community Tasks</small><strong id="communityTaskCount">0</strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon green">✅</span><div><small>Completed</small><strong id="completedTaskCount">0</strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon purple">🎁</span><div><small>Available Rewards</small><strong id="availableRewardCount">0</strong></div></article>
       <article class="bf-bonus-card"><span>🎁</span><div><h3>Daily Bonus</h3><p>Explore new tasks and earn rewards.</p><a href="earn.html">Explore now</a></div></article>
     </section>
 
@@ -34,6 +34,11 @@
         <section class="bf-side-card"><h3>My Account</h3><p><span class="bf-mini-avatar">BF</span><b id="username">Loading…</b></p><div><small>Level</small><strong>LV<span id="profileLevel">1</span></strong></div><div><small>Account status</small><strong id="profileStatus">Active</strong></div><a href="profile.html">Manage profile →</a></section>
         <section class="bf-side-card bf-tips"><span>💡</span><h3>Tips</h3><p>Read each task carefully and upload clear proof after completion.</p><a href="earn.html">Open task board →</a></section>
       </aside>
+    </section>
+
+    <section class="bf-top-task-section" aria-labelledby="topTasksTitle">
+      <div class="bf-section-title"><div><h2 id="topTasksTitle">Top Reward Tasks</h2><p>Five active tasks with the highest Coin rewards.</p></div><a href="earn.html">See all tasks</a></div>
+      <div id="topTasksList" class="bf-top-task-list"><p>Loading top tasks...</p></div>
     </section>
 
     <section class="bf-safety-strip"><div><b>🛡️ Safe rewards</b><span>Internal platform points.</span></div><div><b>👥 Community tasks</b><span>Tasks created by members.</span></div><div><b>⚡ Fast updates</b><span>Track every proof status.</span></div><div><b>🎧 Support</b><span>Contact the team anytime.</span></div></section>
