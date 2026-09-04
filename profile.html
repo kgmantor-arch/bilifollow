@@ -16,6 +16,7 @@
     <p>Manage the name and optional reference profile shown on your account.</p>
     <div id="message" role="status"></div>
     <form id="profileForm" class="card form-card">
+      <div class="avatar-editor"><img id="avatarPreview" alt="Your profile photo" hidden><span id="avatarFallback">BF</span><label for="avatarFile">Profile photo</label><input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG, JPG, or WEBP. Maximum 2 MB. Your photo is stored privately.</small></div>
       <label for="username">Username</label>
       <input id="username" type="text" maxlength="40" required>
       <label for="referenceUrl">Reference Profile URL (optional)</label>

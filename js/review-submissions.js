@@ -222,6 +222,8 @@
             ).toLocaleString()}
           </p>
 
+          ${submission.status === "pending" ? `<p><strong>Automatic approval:</strong> ${new Date(new Date(submission.created_at).getTime() + 20 * 60 * 1000).toLocaleString()} if you do not approve or reject first.</p>` : ""}
+
 
           <p>
             <strong>Proof:</strong>

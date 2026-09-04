@@ -14,13 +14,14 @@
     const referenceUrl = document.getElementById("referenceUrl");
     const message = document.getElementById("message");
     const { data, error } = await client.from("profiles")
-      .select("username, bilibili_url").eq("id", user.id).single();
+      .select("username, bilibili_url, avatar_path").eq("id", user.id).single();
     if (error) {
       message.textContent = "❌ Unable to load your profile.";
       console.error(error);
     } else {
       username.value = data.username || "";
       referenceUrl.value = data.bilibili_url || "";
+      if (data.avatar_path) { const { data: signed } = await client.storage.from("avatars").createSignedUrl(data.avatar_path, 3600); if (signed?.signedUrl) { const preview = document.getElementById("avatarPreview"); preview.src = signed.signedUrl; preview.hidden = false; document.getElementById("avatarFallback").hidden = true; } }
     }
 
     form.addEventListener("submit", async (event) => {
@@ -32,6 +33,21 @@
       });
       message.textContent = saveError ? `❌ ${saveError.message}` : "✅ Profile updated.";
       if (saveError) console.error(saveError);
+    });
+
+    document.getElementById("avatarFile").addEventListener("change", async event => {
+      const file = event.target.files?.[0]; if (!file) return;
+      if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 2 * 1024 * 1024) { message.textContent = "❌ Choose a PNG, JPG, or WEBP image up to 2 MB."; event.target.value = ""; return; }
+      message.textContent = "⏳ Uploading profile photo...";
+      const extension = file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+      const path = `${user.id}/avatar.${extension}`;
+      const { error: uploadError } = await client.storage.from("avatars").upload(path, file, { contentType: file.type, upsert: true });
+      if (uploadError) { message.textContent = `❌ ${uploadError.message}`; return; }
+      const { error: saveError } = await client.rpc("update_profile_avatar", { p_avatar_path: path });
+      if (saveError) { message.textContent = `❌ ${saveError.message}`; return; }
+      const { data: signed } = await client.storage.from("avatars").createSignedUrl(path, 3600);
+      if (signed?.signedUrl) { document.getElementById("avatarPreview").src = signed.signedUrl; document.getElementById("avatarPreview").hidden = false; document.getElementById("avatarFallback").hidden = true; }
+      message.textContent = "✅ Profile photo saved.";
     });
 
     document.getElementById("logoutBtn").addEventListener("click", async (event) => {

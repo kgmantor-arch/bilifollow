@@ -36,6 +36,7 @@
     document.getElementById("noticeForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("site_notice", { enabled: document.getElementById("noticeEnabled").checked, title: document.getElementById("noticeTitle").value.trim(), message: document.getElementById("noticeMessage").value.trim() }); });
     document.getElementById("footerNoticeForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("footer_notice", { enabled: document.getElementById("footerNoticeEnabled").checked, title: document.getElementById("footerNoticeTitle").value.trim(), message: document.getElementById("footerNoticeMessage").value.trim() }); });
     document.getElementById("footerForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("footer", { copyright: document.getElementById("footerCopyright").value.trim(), disclaimer: document.getElementById("footerDisclaimer").value.trim() }); });
+    document.getElementById("welcomeOfferForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("welcome_offer", { enabled: document.getElementById("welcomeOfferEnabled").checked, coins: Number(document.getElementById("welcomeOfferCoins").value), message: document.getElementById("welcomeOfferMessage").value.trim() }); });
     document.getElementById("homeForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const fields = ["homePrimaryUrl", "homeSecondaryUrl", "homeCtaUrl"];
@@ -72,7 +73,7 @@
       const { data, error } = await client.from("app_settings").select("key,value");
       if (error) throw error;
       const settings = Object.fromEntries(data.map(item => [item.key, item.value]));
-      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {};
+      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {}, welcome = settings.welcome_offer || { enabled: true, coins: 50 };
       document.getElementById("noticeEnabled").checked = !!notice.enabled;
       document.getElementById("noticeTitle").value = notice.title || "";
       document.getElementById("noticeMessage").value = notice.message || "";
@@ -81,6 +82,9 @@
       document.getElementById("footerNoticeMessage").value = footerNotice.message || "";
       document.getElementById("footerCopyright").value = footer.copyright || "";
       document.getElementById("footerDisclaimer").value = footer.disclaimer || "";
+      document.getElementById("welcomeOfferEnabled").checked = welcome.enabled !== false;
+      document.getElementById("welcomeOfferCoins").value = Number.isFinite(Number(welcome.coins)) ? Number(welcome.coins) : 50;
+      document.getElementById("welcomeOfferMessage").value = welcome.message || "Welcome to BiliFollow! Your 50 free Coins are ready to use.";
       document.getElementById("adsEnabled").checked = !!ads.enabled;
       document.getElementById("adProvider").value = ads.provider || "adsense";
       document.getElementById("adsenseClient").value = ads.adsenseClient || "";
@@ -136,6 +140,11 @@
       list.innerHTML = rows.map(task => `<article class="admin-row"><strong>#${task.id} ${escapeHtml(task.title || "Task")}</strong><span>${escapeHtml(task.status)} · ${task.completed}/${task.target} · ${task.reward} Coins</span><button data-task="${task.id}" data-action="${task.status === "active" ? "pause" : "activate"}">${task.status === "active" ? "Pause" : "Activate"}</button></article>`).join("") || "No tasks found.";
       list.querySelectorAll("button[data-task]").forEach(button => button.addEventListener("click", async () => { try { await rpc("admin_manage_task", { p_task_id: Number(button.dataset.task), p_action: button.dataset.action }); say("Task updated."); await loadTasks(); } catch (error) { say(`Task update failed: ${error.message}`); } }));
     }
+    async function loadActivity() {
+      const rows = await rpc("admin_list_activity", { p_limit: 150 });
+      const list = document.getElementById("activityList");
+      list.innerHTML = rows.map(item => `<article class="admin-row"><strong>${escapeHtml(item.kind.replaceAll("_", " "))}${item.task_title ? ` · ${escapeHtml(item.task_title)}` : ""}</strong><span>${item.creator ? `Task creator: ${escapeHtml(item.creator)} · ` : ""}${item.worker ? `Member: ${escapeHtml(item.worker)} · ` : ""}${item.reviewer ? `Reviewed by: ${escapeHtml(item.reviewer)} · ` : ""}${item.amount ? `${item.amount > 0 ? "+" : ""}${item.amount} Coins · ` : ""}${escapeHtml(item.detail || "")}</span><small>${new Date(item.happened_at).toLocaleString()}</small></article>`).join("") || "No activity yet.";
+    }
     async function loadReports() {
       const { data, error } = await client.from("reports").select("id,task_id,category,details,status,created_at").order("created_at", { ascending: false });
       if (error) throw error;
@@ -156,7 +165,7 @@
       }));
       list.querySelectorAll("button[data-contact]").forEach(button => button.addEventListener("click", async () => { try { await rpc("admin_moderate_contact_message", { p_message_id: Number(button.dataset.contact), p_status: button.dataset.contactState, p_note: document.getElementById(`cnote-${button.dataset.contact}`).value }); say("Contact message updated."); await loadContacts(); await loadStats(); } catch (error) { say(`Contact update failed: ${error.message}`); } }));
     }
-    try { await Promise.all([loadStats(), loadSettings(), loadSelectedPage(), loadMembers(), loadTasks(), loadReports(), loadContacts()]); }
+    try { await Promise.all([loadStats(), loadSettings(), loadSelectedPage(), loadMembers(), loadTasks(), loadActivity(), loadReports(), loadContacts()]); }
     catch (error) { say(`Admin panel could not load: ${error.message}`); }
   }
 
