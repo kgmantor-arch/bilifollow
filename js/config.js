@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
-const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
+const SUPABASE_URL = "https://rivmdyxytxiixxdkgufv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_k0C2qnTtys1UnMqEXKi2Eg_mPbiyuvG";
 
 const AD_CONFIG = { enabled: false, adsenseClient: "", adsenseBannerSlot: "", popupHtml: "" };
 const SUPABASE_AUTH_OPTIONS = { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } };
