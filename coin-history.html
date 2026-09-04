@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coin History - BiliFollow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">BiliFollow</a>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="earn.html">Earn Coins</a>
+        <a href="promote.html">Create Task</a>
+        <a href="my-tasks.html">My Tasks</a>
+        <a href="my-submissions.html">My Submissions</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="padding:40px 20px;">
+    <h1>🪙 Coin History</h1>
+    <p>Review your BiliFollow Coin earnings and spending.</p>
+    <div id="balance" style="margin-top:20px;">Loading balance...</div>
+    <section style="margin-top:28px;">
+      <h2>Transactions</h2>
+      <div id="transactionList" style="margin-top:15px;">Loading transactions...</div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/coin-history.js"></script>
+</body>
+</html>

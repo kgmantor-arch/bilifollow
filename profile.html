@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Settings - BiliFollow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar"><div class="container nav-inner">
+    <a href="index.html" class="logo">BiliFollow</a>
+    <nav><a href="dashboard.html">Dashboard</a><a href="earn.html">Earn Coins</a><a href="promote.html">Create Task</a><a href="notifications.html">Notifications</a><a href="#" id="logoutBtn">Logout</a></nav>
+  </div></header>
+  <main class="container page-content">
+    <h1>Profile Settings</h1>
+    <p>Manage the name and optional reference profile shown on your account.</p>
+    <div id="message" role="status"></div>
+    <form id="profileForm" class="card form-card">
+      <label for="username">Username</label>
+      <input id="username" type="text" maxlength="40" required>
+      <label for="referenceUrl">Reference Profile URL (optional)</label>
+      <input id="referenceUrl" type="url" placeholder="https://example.com/profile">
+      <button type="submit">Save Changes</button>
+    </form>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Earn Coins — BiliFollow</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .earn-page {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .earn-header {
+      margin-bottom: 30px;
+    }
+
+    .earn-header h1 {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .earn-header p {
+      color: #6b7280;
+    }
+
+    .balance-box {
+      background: #00aeec;
+      color: white;
+      padding: 25px;
+      border-radius: 18px;
+      margin-bottom: 30px;
+    }
+
+    .balance-box small {
+      opacity: .9;
+    }
+
+    .balance {
+      font-size: 38px;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .task-card {
+      background: white;
+      border: 1px solid #e5eaf0;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .task-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .task-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .task-description {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .reward {
+      white-space: nowrap;
+      background: #fff5d9;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .task-button {
+      display: inline-block;
+      margin-top: 18px;
+      text-decoration: none;
+      background: #00aeec;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 9px;
+      font-weight: 700;
+    }
+
+    .empty {
+      background: white;
+      border: 1px solid #e5eaf0;
+      padding: 45px 20px;
+      border-radius: 16px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+      .task-top {
+        flex-direction: column;
+      }
+
+      .earn-header h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">BiliFollow</a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="promote.html">Create Task</a>
+      <a href="my-tasks.html">My Tasks</a>
+      <a href="my-submissions.html">My Submissions</a>
+      <a href="coin-history.html">Coin History</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+  </div>
+</header>
+
+
+<main class="earn-page bf-task-board">
+
+  <section class="earn-header">
+
+    <span class="bf-page-eyebrow">COMMUNITY TASKS</span>
+
+    <h1>🪙 Earn Coins</h1>
+
+    <p>
+      Complete available tasks and earn BiliFollow Coins.
+    </p>
+
+  </section>
+
+
+  <section class="balance-box bf-board-balance">
+
+    <small>Your Current Balance</small>
+
+    <div class="balance">
+      <span id="coinBalance">0</span> Coins
+    </div>
+
+  </section>
+
+
+  <section class="bf-board-section">
+
+    <div class="bf-task-help"><strong>ℹ️ How it works</strong><span>Choose a task · Follow its instructions · Upload private proof · Earn after review</span></div>
+
+    <h2>Available Tasks</h2>
+
+    <div class="bf-task-head"><span>Task</span><span>Reward</span><span>Progress</span><span>Action</span></div>
+
+    <div id="taskList" class="task-list">
+
+      <div class="empty">
+        Loading available tasks...
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <div class="logo">
+    Bili<span>Follow</span>
+  </div>
+
+  <p>
+    © 2026 BiliFollow. All rights reserved.
+  </p>
+
+  <p class="small">
+    BiliFollow Coins are internal platform points and
+    are not Bilibili official Coins or Flowers.
+  </p>
+
+</footer>
+
+
+<script src="js/config.js"></script>
+<script src="js/earn.js"></script>
+
+</body>
+</html>

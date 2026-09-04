@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard — BiliFollow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="bf-dashboard">
+    <section class="bf-stat-grid" aria-label="Account overview">
+      <article class="bf-stat-card coin-stat"><span class="bf-stat-icon">🪙</span><div><small>Coins Balance</small><strong><span id="coinBalance">0</span></strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon blue">👥</span><div><small>Community</small><strong>Tasks</strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon green">✅</span><div><small>Completed</small><strong>0</strong></div></article>
+      <article class="bf-stat-card"><span class="bf-stat-icon purple">🎁</span><div><small>Rewards</small><strong>0</strong></div></article>
+      <article class="bf-bonus-card"><span>🎁</span><div><h3>Daily Bonus</h3><p>Explore new tasks and earn rewards.</p><a href="earn.html">Explore now</a></div></article>
+    </section>
+
+    <section class="bf-hero">
+      <div class="bf-hero-copy"><span>COMMUNITY REWARDS</span><h1>Promote<br><em>your community</em></h1><p>Create clear tasks, collect valid proof, and reward completed work.</p><a href="promote.html">Create a Task <b>→</b></a></div>
+      <div class="bf-mascot" aria-hidden="true"><i></i><i></i><div class="bf-face"><b>•  •</b><strong>⌣</strong></div><div class="bf-hand">👍</div><span class="chip coin">🪙</span><span class="chip play">▶</span></div>
+    </section>
+
+    <section class="bf-dashboard-columns">
+      <div>
+        <div class="bf-section-title"><div><h2>Community Tasks</h2><p>Choose a task and earn Coins after review.</p></div><a href="earn.html">View All</a></div>
+        <div class="bf-quick-list">
+          <a href="earn.html"><span>🎯</span><div><b>Browse available tasks</b><small>Find a task that matches your skills</small></div><strong>🪙 Rewards</strong><i>Open →</i></a>
+          <a href="my-submissions.html"><span class="violet">📷</span><div><b>My submitted proofs</b><small>Check pending and reviewed submissions</small></div><strong>✅ Status</strong><i>View →</i></a>
+          <a href="my-tasks.html"><span class="blue">📋</span><div><b>Tasks I created</b><small>Manage your funded community tasks</small></div><strong>📣 Manage</strong><i>Open →</i></a>
+        </div>
+      </div>
+      <aside class="bf-side-cards">
+        <section class="bf-side-card"><h3>My Account</h3><p><span class="bf-mini-avatar">BF</span><b id="username">Loading…</b></p><div><small>Level</small><strong>LV<span id="profileLevel">1</span></strong></div><div><small>Account status</small><strong id="profileStatus">Active</strong></div><a href="profile.html">Manage profile →</a></section>
+        <section class="bf-side-card bf-tips"><span>💡</span><h3>Tips</h3><p>Read each task carefully and upload clear proof after completion.</p><a href="earn.html">Open task board →</a></section>
+      </aside>
+    </section>
+
+    <section class="bf-safety-strip"><div><b>🛡️ Safe rewards</b><span>Internal platform points.</span></div><div><b>👥 Community tasks</b><span>Tasks created by members.</span></div><div><b>⚡ Fast updates</b><span>Track every proof status.</span></div><div><b>🎧 Support</b><span>Contact the team anytime.</span></div></section>
+
+    <section class="bf-profile-data">
+      <span id="profileUsername"></span><span id="profileEmail"></span><span id="bilibiliProfile"></span>
+      <a id="adminCard" href="admin.html" hidden>Admin Control Center</a><button id="logoutButton" type="button">Log out</button>
+    </section>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
