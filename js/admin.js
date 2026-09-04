@@ -11,6 +11,8 @@
   }
 
   async function init() {
+    const allowed = await (window.bfAdminGate || Promise.resolve(true));
+    if (!allowed) return;
     await loadSupabase();
     const client = createSupabaseClient();
     const { data: { user } } = await client.auth.getUser();
@@ -44,7 +46,11 @@
       event.preventDefault();
       const url = document.getElementById("popupUrl").value.trim();
       if (url && !/^https:\/\//i.test(url)) { say("Popup URL must start with https://"); return; }
-      await saveSetting("ads", { enabled: document.getElementById("adsEnabled").checked, adsenseClient: document.getElementById("adsenseClient").value.trim(), adsenseBannerSlot: document.getElementById("adsenseBannerSlot").value.trim(), popupEnabled: document.getElementById("popupEnabled").checked, popupTitle: document.getElementById("popupTitle").value.trim(), popupMessage: document.getElementById("popupMessage").value.trim(), popupUrl: url, popupButton: document.getElementById("popupButton").value.trim() });
+      const networkScriptUrl = document.getElementById("networkScriptUrl").value.trim();
+      const directUrl = document.getElementById("directUrl").value.trim();
+      if (networkScriptUrl && !/^https:\/\//i.test(networkScriptUrl)) { say("Network script URL must start with https://"); return; }
+      if (directUrl && !/^https:\/\//i.test(directUrl)) { say("Direct-link URL must start with https://"); return; }
+      await saveSetting("ads", { enabled: document.getElementById("adsEnabled").checked, provider: document.getElementById("adProvider").value, adsenseClient: document.getElementById("adsenseClient").value.trim(), adsenseBannerSlot: document.getElementById("adsenseBannerSlot").value.trim(), networkScriptUrl, adsterraKey: document.getElementById("adsterraKey").value.trim(), adsterraWidth: Number(document.getElementById("adsterraWidth").value) || 728, adsterraHeight: Number(document.getElementById("adsterraHeight").value) || 90, directTitle: document.getElementById("directTitle").value.trim(), directMessage: document.getElementById("directMessage").value.trim(), directUrl, directButton: document.getElementById("directButton").value.trim(), popupEnabled: document.getElementById("popupEnabled").checked, popupTitle: document.getElementById("popupTitle").value.trim(), popupMessage: document.getElementById("popupMessage").value.trim(), popupUrl: url, popupButton: document.getElementById("popupButton").value.trim() });
     });
     document.getElementById("pageForm").addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -76,8 +82,17 @@
       document.getElementById("footerCopyright").value = footer.copyright || "";
       document.getElementById("footerDisclaimer").value = footer.disclaimer || "";
       document.getElementById("adsEnabled").checked = !!ads.enabled;
+      document.getElementById("adProvider").value = ads.provider || "adsense";
       document.getElementById("adsenseClient").value = ads.adsenseClient || "";
       document.getElementById("adsenseBannerSlot").value = ads.adsenseBannerSlot || "";
+      document.getElementById("networkScriptUrl").value = ads.networkScriptUrl || "";
+      document.getElementById("adsterraKey").value = ads.adsterraKey || "";
+      document.getElementById("adsterraWidth").value = ads.adsterraWidth || 728;
+      document.getElementById("adsterraHeight").value = ads.adsterraHeight || 90;
+      document.getElementById("directTitle").value = ads.directTitle || "";
+      document.getElementById("directMessage").value = ads.directMessage || "";
+      document.getElementById("directUrl").value = ads.directUrl || "";
+      document.getElementById("directButton").value = ads.directButton || "";
       document.getElementById("popupEnabled").checked = !!ads.popupEnabled;
       document.getElementById("popupTitle").value = ads.popupTitle || "";
       document.getElementById("popupMessage").value = ads.popupMessage || ads.popupHtml || "";

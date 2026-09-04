@@ -25,10 +25,10 @@
 
 <main class="container" style="padding:40px 20px;">
 
-  <h1>📢 Create Community Task</h1>
+  <h1>📢 Create a Follow Task</h1>
 
   <p>
-    Spend your BiliFollow Coins to create a legitimate community task.
+    Create a clear Bilibili follow task. Members will follow the target account, upload a screenshot, and receive Coins only after proof approval.
   </p>
 
   <div id="balance" class="card">
@@ -39,33 +39,30 @@
 
   <form id="taskForm" class="card" style="margin-top:20px;">
 
-    <label for="taskTitle">Task Title</label>
-    <input type="text" id="taskTitle" maxlength="120" placeholder="e.g. Translate a short community guide" required style="width:100%;padding:12px;margin:8px 0 18px;">
+    <label for="taskTitle">Target Account / Task Title</label>
+    <input type="text" id="taskTitle" maxlength="120" placeholder="e.g. Follow @bili_user01 on Bilibili" required style="width:100%;padding:12px;margin:8px 0 18px;">
 
-    <label for="taskInstructions">Instructions</label>
-    <textarea id="taskInstructions" maxlength="4000" placeholder="Explain what the worker should do and what proof is expected." required style="width:100%;min-height:120px;padding:12px;margin:8px 0 18px;"></textarea>
+    <label for="taskInstructions">What must the member do?</label>
+    <textarea id="taskInstructions" maxlength="4000" placeholder="1. Open the profile link below.&#10;2. Follow the account.&#10;3. Take a clear screenshot showing the account name and Followed status.&#10;4. Return here and upload that screenshot as proof." required style="width:100%;min-height:120px;padding:12px;margin:8px 0 18px;"></textarea>
+    <p class="form-help">Write simple step-by-step instructions. Tell members exactly what must be visible in their proof screenshot.</p>
 
     <label for="category">Category</label>
     <select id="category" style="width:100%;padding:12px;margin:8px 0 18px;">
-      <option value="Community">Community</option>
-      <option value="Content">Content</option>
-      <option value="Design">Design</option>
-      <option value="Translation">Translation</option>
-      <option value="Research">Research</option>
-      <option value="General">General</option>
+      <option value="Bilibili Follow">Bilibili Follow</option>
+      <option value="Community">Other Community Task</option>
     </select>
 
-    <label for="taskUrl">Reference Link</label>
+    <label for="taskUrl">Bilibili Profile Link</label>
 
     <p class="form-help">
-      Link to the legitimate task brief or reference material. Do not use tasks
-      that request artificial engagement, such as follows, likes, or views.
+      Paste the public Bilibili profile link that members must open and follow.
+      Check the link yourself before publishing the task.
     </p>
 
     <input
       type="url"
       id="taskUrl"
-      placeholder="https://example.com/task-brief"
+      placeholder="https://space.bilibili.com/..."
       required
       style="width:100%;padding:12px;margin:8px 0 18px;"
     >
