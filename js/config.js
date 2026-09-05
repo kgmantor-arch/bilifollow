@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://rivmdyxytxiixxdkgufv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_k0C2qnTtys1UnMqEXKi2Eg_mPbiyuvG";
+const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
 
 // Brand favicon for every page. Kept as local SVG so it needs no outside host.
 if (!document.querySelector('link[rel="icon"]')) {
@@ -50,7 +50,7 @@ if (!document.querySelector('script[src="js/seo.js"]')) { const seo = document.c
 document.addEventListener("DOMContentLoaded", () => {
   const route = window.location.pathname.split("/").pop() || "index";
   const currentPage = route.includes(".") ? route : `${route}.html`;
-  const appPages = new Set(["dashboard.html", "earn.html", "task.html", "promote.html", "my-tasks.html", "my-submissions.html", "coin-history.html", "notifications.html", "profile.html", "review-submissions.html", "admin.html"]);
+  const appPages = new Set(["dashboard.html", "earn.html", "task.html", "promote.html", "my-tasks.html", "edit-task.html", "my-submissions.html", "coin-history.html", "notifications.html", "profile.html", "review-submissions.html", "admin.html"]);
   if (appPages.has(currentPage)) { const shell = document.createElement("script"); shell.src = "js/app-shell.js"; shell.defer = true; document.head.appendChild(shell); }
   const ads = document.createElement("script");
   ads.src = "js/ads.js";

@@ -25,6 +25,7 @@
       return result.data;
     };
     setupAdminSections();
+    setupPageEditor();
 
     const saveSetting = async (key, value) => {
       try { await rpc("admin_set_setting", { p_key: key, p_value: value }); say("Settings saved. Refresh the website to see them."); }
@@ -196,6 +197,34 @@
       tabs.appendChild(button);
     });
     main.querySelector("#stats").after(tabs);
+  }
+
+  function setupPageEditor() {
+    const editor = document.getElementById("pageBody");
+    document.querySelectorAll("[data-page-format]").forEach(button => button.addEventListener("click", () => {
+      const action = button.dataset.pageFormat;
+      const start = editor.selectionStart, end = editor.selectionEnd;
+      const selected = editor.value.slice(start, end);
+      let replacement = selected;
+      if (action === "bold") replacement = `**${selected || "bold text"}**`;
+      if (action === "link") {
+        if (!selected) { alert("First select the word or sentence you want to link."); return; }
+        const url = prompt("Paste the HTTPS link:");
+        if (!url) return;
+        if (!/^https:\/\//i.test(url.trim())) { alert("Link must start with https://"); return; }
+        replacement = `[${selected}](${url.trim()})`;
+      }
+      if (action === "heading") {
+        const lineStart = editor.value.lastIndexOf("\n", start - 1) + 1;
+        const lineEnd = editor.value.indexOf("\n", end);
+        const line = editor.value.slice(lineStart, lineEnd < 0 ? editor.value.length : lineEnd).replace(/^##\s*/, "");
+        editor.setRangeText(`## ${line || "Section heading"}`, lineStart, lineEnd < 0 ? editor.value.length : lineEnd, "end");
+        editor.focus(); return;
+      }
+      if (action === "list") replacement = (selected || "List item").split("\n").map(line => `- ${line.replace(/^-\s*/, "")}`).join("\n");
+      editor.setRangeText(replacement, start, end, "end");
+      editor.focus();
+    }));
   }
 
   function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }

@@ -166,6 +166,15 @@
                 📋 Review Submissions
               </a>
 
+              ${task.status === "active" ? `
+                <a href="edit-task.html?task_id=${task.id}" class="btn" style="display:inline-block;margin-left:8px;text-decoration:none;">
+                  ✏️ Edit Task
+                </a>
+                <button type="button" class="btn cancel-task-btn" data-task-id="${task.id}" data-task-title="${escapeHtml(task.title || `Task #${task.id}`)}" style="margin-left:8px;background:#6b7280;">
+                  🗑️ Delete / Cancel
+                </button>
+              ` : ""}
+
             </p>
 
 
@@ -173,6 +182,25 @@
         `;
 
       }).join("");
+
+    list.querySelectorAll(".cancel-task-btn").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const taskId = Number(button.dataset.taskId);
+        const title = button.dataset.taskTitle || "this task";
+        if (!confirm(`Cancel "${title}"?\n\nThe task will stop immediately. Unused coins will be refunded. This cannot be undone.`)) return;
+        button.disabled = true;
+        button.textContent = "⏳ Cancelling...";
+        const { data: refund, error: cancelError } = await supabaseClient.rpc("cancel_own_task", { p_task_id: taskId });
+        if (cancelError) {
+          alert(`Could not cancel task: ${cancelError.message}`);
+          button.disabled = false;
+          button.textContent = "🗑️ Delete / Cancel";
+          return;
+        }
+        alert(`Task cancelled. ${Number(refund || 0).toLocaleString()} Coins were refunded.`);
+        window.location.reload();
+      });
+    });
 
 
     // Logout

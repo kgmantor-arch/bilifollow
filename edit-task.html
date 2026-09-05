@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task - BiliFollow</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar"><div class="container nav-inner"><a href="dashboard.html" class="logo">BiliFollow</a></div></header>
+<main class="container page-content">
+  <a href="my-tasks.html">← Back to My Posts</a>
+  <h1 style="margin-top:18px;">✏️ Edit Task</h1>
+  <p>Update the task details. Reward, target, and completed work cannot be changed after publishing.</p>
+  <p id="message" role="status"></p>
+  <form id="editTaskForm" class="form-card">
+    <label for="taskTitle">Task title</label>
+    <input id="taskTitle" maxlength="120" required>
+    <label for="taskInstructions">Instructions for members</label>
+    <textarea id="taskInstructions" maxlength="4000" required></textarea>
+    <label for="category">Category</label>
+    <select id="category"><option value="Bilibili Follow">Bilibili Follow</option><option value="Community">Other Community Task</option></select>
+    <label for="taskUrl">Reference link</label>
+    <input id="taskUrl" type="url" maxlength="2000" required>
+    <label for="deadline">Deadline (optional)</label>
+    <input id="deadline" type="datetime-local">
+    <button type="submit">💾 Save Changes</button>
+  </form>
+</main>
+<script src="js/config.js"></script>
+<script src="js/edit-task.js"></script>
+</body>
+</html>
