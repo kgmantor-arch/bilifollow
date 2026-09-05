@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://rivmdyxytxiixxdkgufv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_k0C2qnTtys1UnMqEXKi2Eg_mPbiyuvG";
+const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
 
 const AD_CONFIG = { enabled: true, provider: "demo", adsenseClient: "", adsenseBannerSlot: "", networkScriptUrl: "", adsterraKey: "", adsterraWidth: 728, adsterraHeight: 90, directTitle: "BiliFollow test advertisement", directMessage: "Your advertisement will appear here. Replace this test ad in Control Center.", directUrl: "", directButton: "Learn more", popupHtml: "" };
 const SUPABASE_AUTH_OPTIONS = { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } };

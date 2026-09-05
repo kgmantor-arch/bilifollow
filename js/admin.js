@@ -48,11 +48,12 @@
       event.preventDefault();
       const url = document.getElementById("popupUrl").value.trim();
       if (url && !/^https:\/\//i.test(url)) { say("Popup URL must start with https://"); return; }
-      const networkScriptUrl = document.getElementById("networkScriptUrl").value.trim();
       const directUrl = document.getElementById("directUrl").value.trim();
-      if (networkScriptUrl && !/^https:\/\//i.test(networkScriptUrl)) { say("Network script URL must start with https://"); return; }
       if (directUrl && !/^https:\/\//i.test(directUrl)) { say("Direct-link URL must start with https://"); return; }
-      await saveSetting("ads", { enabled: document.getElementById("adsEnabled").checked, provider: document.getElementById("adProvider").value, adsenseClient: document.getElementById("adsenseClient").value.trim(), adsenseBannerSlot: document.getElementById("adsenseBannerSlot").value.trim(), networkScriptUrl, adsterraKey: document.getElementById("adsterraKey").value.trim(), adsterraWidth: Number(document.getElementById("adsterraWidth").value) || 728, adsterraHeight: Number(document.getElementById("adsterraHeight").value) || 90, directTitle: document.getElementById("directTitle").value.trim(), directMessage: document.getElementById("directMessage").value.trim(), directUrl, directButton: document.getElementById("directButton").value.trim(), popupEnabled: document.getElementById("popupEnabled").checked, popupTitle: document.getElementById("popupTitle").value.trim(), popupMessage: document.getElementById("popupMessage").value.trim(), popupUrl: url, popupButton: document.getElementById("popupButton").value.trim() });
+      const provider = document.getElementById("adProvider").value;
+      const adsterraCode = document.getElementById("adsterraCode").value.trim();
+      if ((provider === "adsterra-banner" || provider === "adsterra-social") && (!/atOptions/i.test(adsterraCode) || !/<script[^>]+src=/i.test(adsterraCode))) { say("Paste the complete Adsterra Get Code: it must include atOptions and the final script src line."); return; }
+      await saveSetting("ads", { enabled: document.getElementById("adsEnabled").checked, provider, adPlacement: document.getElementById("adPlacement").value, adsenseClient: document.getElementById("adsenseClient").value.trim(), adsenseBannerSlot: document.getElementById("adsenseBannerSlot").value.trim(), adsterraCode, adsterraWidth: Number(document.getElementById("adsterraWidth").value) || 728, adsterraHeight: Number(document.getElementById("adsterraHeight").value) || 90, directTitle: document.getElementById("directTitle").value.trim(), directMessage: document.getElementById("directMessage").value.trim(), directUrl, directButton: document.getElementById("directButton").value.trim(), popupEnabled: document.getElementById("popupEnabled").checked, popupTitle: document.getElementById("popupTitle").value.trim(), popupMessage: document.getElementById("popupMessage").value.trim(), popupUrl: url, popupButton: document.getElementById("popupButton").value.trim() });
     });
     document.getElementById("pageForm").addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -91,11 +92,11 @@
       document.getElementById("welcomeOfferCoins").value = Number.isFinite(Number(welcome.coins)) ? Number(welcome.coins) : 50;
       document.getElementById("welcomeOfferMessage").value = welcome.message || "Welcome to BiliFollow! Your 50 free Coins are ready to use.";
       document.getElementById("adsEnabled").checked = !!ads.enabled;
-      document.getElementById("adProvider").value = ads.provider || "adsense";
+      document.getElementById("adProvider").value = ads.provider === "adsterra" ? "adsterra-banner" : (ads.provider || "adsense");
+      document.getElementById("adPlacement").value = ads.adPlacement || "top";
       document.getElementById("adsenseClient").value = ads.adsenseClient || "";
       document.getElementById("adsenseBannerSlot").value = ads.adsenseBannerSlot || "";
-      document.getElementById("networkScriptUrl").value = ads.networkScriptUrl || "";
-      document.getElementById("adsterraKey").value = ads.adsterraKey || "";
+      document.getElementById("adsterraCode").value = ads.adsterraCode || (String(ads.adsterraKey || "").includes("<script") ? ads.adsterraKey : "");
       document.getElementById("adsterraWidth").value = ads.adsterraWidth || 728;
       document.getElementById("adsterraHeight").value = ads.adsterraHeight || 90;
       document.getElementById("directTitle").value = ads.directTitle || "";

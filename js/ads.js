@@ -8,12 +8,33 @@
     } catch (error) { console.warn("Using local ad settings", error); return { ads: AD_CONFIG, site_notice: null }; }
   }
   function safeHttpsUrl(value) { return typeof value === "string" && /^https:\/\//i.test(value) ? value : ""; }
+  function adsterraSnippet(value) {
+    const code = String(value || "");
+    const sourceMatch = code.match(/<script[^>]+src\s*=\s*["']([^"']+)["']/i);
+    const keyMatch = code.match(/["']key["']\s*:\s*["']([^"']+)["']/i);
+    const widthMatch = code.match(/["']width["']\s*:\s*(\d+)/i);
+    const heightMatch = code.match(/["']height["']\s*:\s*(\d+)/i);
+    const rawSource = sourceMatch?.[1] || "";
+    const source = rawSource.startsWith("//") ? `https:${rawSource}` : safeHttpsUrl(rawSource);
+    return { source, key: keyMatch?.[1] || "", width: Number(widthMatch?.[1]) || 0, height: Number(heightMatch?.[1]) || 0 };
+  }
+  function adsensePublisher(value) { return String(value || "").match(/ca-pub-[0-9]+/i)?.[0] || ""; }
+  function placeBanner(host, placement) {
+    const main = document.querySelector("main"); const footer = document.querySelector("footer");
+    if (placement === "top" && main) main.before(host);
+    else if (placement === "bottom" && footer) footer.before(host);
+    else if (main) main.after(host);
+    else document.body.appendChild(host);
+  }
   function createBanner(config) {
     if (!config.enabled) return;
-    const host = document.createElement("aside"); host.className = "ad-banner"; host.setAttribute("aria-label", "Advertisement");
-    host.innerHTML = '<small>Advertisement</small><div class="ad-banner-slot"></div>'; document.body.appendChild(host);
-    const slot = host.querySelector(".ad-banner-slot");
     const provider = config.provider || "adsense";
+    const social = provider === "adsterra-social";
+    const requestedHeight = Number(config.adsterraHeight || 90);
+    const host = document.createElement("aside"); host.className = social ? "ad-network-loader" : `ad-banner${requestedHeight > 110 ? " ad-banner--tall" : ""}`; host.setAttribute("aria-label", "Advertisement");
+    if (!social) { host.innerHTML = '<small>Advertisement</small><div class="ad-banner-slot"></div>'; placeBanner(host, config.adPlacement || "top"); }
+    else document.body.appendChild(host);
+    const slot = host.querySelector(".ad-banner-slot") || host;
     if (provider === "demo") {
       slot.innerHTML = '<div class="bf-test-ad"><b>Test Advertisement</b><span></span></div>';
       slot.querySelector("span").textContent = config.directMessage || "Replace this test ad from Control Center.";
@@ -27,7 +48,14 @@
       wrap.append(title, message); slot.appendChild(wrap); return;
     }
     if (provider === "adsense") {
-      if (!config.adsenseClient || !config.adsenseBannerSlot) { slot.textContent = "AdSense banner settings are incomplete."; return; }
+      if (!config.adsenseClient) { slot.textContent = "Enter your AdSense publisher ID (ca-pub-...) in Control Center."; return; }
+      // No slot means Auto ads: the official AdSense loader is added on every
+      // page and Google selects eligible placements. A slot means manual unit.
+      if (!config.adsenseBannerSlot) {
+        const autoScript = document.createElement("script"); autoScript.async = true;
+        autoScript.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(config.adsenseClient)}`;
+        autoScript.crossOrigin = "anonymous"; document.head.appendChild(autoScript); host.remove(); return;
+      }
     const script = document.createElement("script"); script.async = true;
     script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(config.adsenseClient)}`; script.crossOrigin = "anonymous"; document.head.appendChild(script);
     const ad = document.createElement("ins"); ad.className = "adsbygoogle"; ad.style.display = "block";
@@ -35,9 +63,10 @@
     script.onload = () => { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (error) { console.warn("Banner ad could not load", error); } };
       return;
     }
-    const source = safeHttpsUrl(config.networkScriptUrl);
-    if (!source) { slot.textContent = "Advertisement script URL is incomplete."; return; }
-    if (provider === "adsterra" && config.adsterraKey) window.atOptions = { key: config.adsterraKey, format: "iframe", height: Number(config.adsterraHeight || 90), width: Number(config.adsterraWidth || 728), params: {} };
+    const snippet = adsterraSnippet(config.adsterraCode || config.adsterraKey);
+    const source = snippet.source || safeHttpsUrl(config.networkScriptUrl);
+    if (!source) { if (!social) slot.textContent = "Paste the complete Adsterra Get Code in Control Center (including its script src line)."; return; }
+    if (provider === "adsterra" || provider === "adsterra-banner" || social) window.atOptions = { key: snippet.key || config.adsterraKey, format: "iframe", height: snippet.height || Number(config.adsterraHeight || 90), width: snippet.width || Number(config.adsterraWidth || 728), params: {} };
     const script = document.createElement("script"); script.async = true; script.src = source; script.referrerPolicy = "strict-origin-when-cross-origin"; slot.appendChild(script);
   }
   function createOneTimeModal(config) {
