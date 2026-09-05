@@ -8,8 +8,15 @@ if (!document.querySelector('link[rel="icon"]')) {
   document.head.appendChild(favicon);
 }
 
-// Paste your GA4 Measurement ID here after creating a Web stream in Analytics.
-// Example: const GOOGLE_ANALYTICS_ID = "G-ABC123DEF4";
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EVYDLG8YXC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EVYDLG8YXC');
+</script>
 const GOOGLE_ANALYTICS_ID = "";
 
 const AD_CONFIG = { enabled: true, provider: "demo", adsenseClient: "", adsenseBannerSlot: "", networkScriptUrl: "", adsterraKey: "", adsterraWidth: 728, adsterraHeight: 90, directTitle: "BiliFollow test advertisement", directMessage: "Your advertisement will appear here. Replace this test ad in Control Center.", directUrl: "", directButton: "Learn more", popupHtml: "" };
