@@ -57,16 +57,22 @@ document.addEventListener("DOMContentLoaded", () => {
   ads.defer = true;
   document.head.appendChild(ads);
 
-  // Official Tawk.to widget: loaded once globally for real-time two-way support.
-  if (!window.Tawk_API && !document.querySelector('script[data-bilifollow-tawk]')) {
+  // Official Tawk.to widget: administrators can connect or disable it in
+  // Control Center without editing source files.
+  const loadTawk = (embedUrl) => {
+    if (!/^https:\/\/embed\.tawk\.to\/[a-z0-9/_-]+$/i.test(embedUrl || "") || window.Tawk_API || document.querySelector('script[data-bilifollow-tawk]')) return;
     window.Tawk_API = window.Tawk_API || {};
     window.Tawk_LoadStart = new Date();
     const tawk = document.createElement("script");
     tawk.async = true;
-    tawk.src = "https://embed.tawk.to/6a9ade7201ac02344ed3b885/1k1mf9sgb";
+    tawk.src = embedUrl;
     tawk.charset = "UTF-8";
     tawk.crossOrigin = "*";
     tawk.dataset.bilifollowTawk = "true";
     document.head.appendChild(tawk);
-  }
+  };
+  fetch(`${SUPABASE_URL}/rest/v1/app_settings?select=value&key=eq.support_chat`, { headers: { apikey: SUPABASE_KEY } })
+    .then(response => response.ok ? response.json() : [])
+    .then(rows => { const config = rows[0]?.value || {}; if (config.enabled !== false) loadTawk(config.embedUrl || "https://embed.tawk.to/6a9ade7201ac02344ed3b885/1k1mf9sgb"); })
+    .catch(() => loadTawk("https://embed.tawk.to/6a9ade7201ac02344ed3b885/1k1mf9sgb"));
 });
