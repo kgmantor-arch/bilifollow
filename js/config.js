@@ -1,6 +1,13 @@
 const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
 const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
 
+// Brand favicon for every page. Kept as local SVG so it needs no outside host.
+if (!document.querySelector('link[rel="icon"]')) {
+  const favicon = document.createElement("link");
+  favicon.rel = "icon"; favicon.type = "image/svg+xml"; favicon.href = "favicon.svg";
+  document.head.appendChild(favicon);
+}
+
 // Paste your GA4 Measurement ID here after creating a Web stream in Analytics.
 // Example: const GOOGLE_ANALYTICS_ID = "G-ABC123DEF4";
 const GOOGLE_ANALYTICS_ID = "";

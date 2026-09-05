@@ -38,6 +38,12 @@
     document.getElementById("footerForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("footer", { copyright: document.getElementById("footerCopyright").value.trim(), disclaimer: document.getElementById("footerDisclaimer").value.trim() }); });
     document.getElementById("statsSettingsForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("site_stats", { manual: document.getElementById("statsManualEnabled").checked, users: Number(document.getElementById("statsUsers").value) || 0, activeTasks: Number(document.getElementById("statsActiveTasks").value) || 0, completedTasks: Number(document.getElementById("statsCompletedTasks").value) || 0 }); });
     document.getElementById("welcomeOfferForm").addEventListener("submit", async (event) => { event.preventDefault(); await saveSetting("welcome_offer", { enabled: document.getElementById("welcomeOfferEnabled").checked, coins: Number(document.getElementById("welcomeOfferCoins").value), message: document.getElementById("welcomeOfferMessage").value.trim() }); });
+    document.getElementById("supportChatForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const url = document.getElementById("supportChatUrl").value.trim();
+      if (url && !/^https:\/\/embed\.tawk\.to\/[a-z0-9/_-]+$/i.test(url)) { say("Use the Tawk.to embed URL beginning with https://embed.tawk.to/"); return; }
+      await saveSetting("support_chat", { enabled: document.getElementById("supportChatEnabled").checked, embedUrl: url });
+    });
     document.getElementById("homeForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const fields = ["homePrimaryUrl", "homeSecondaryUrl", "homeCtaUrl"];
@@ -75,7 +81,7 @@
       const { data, error } = await client.from("app_settings").select("key,value");
       if (error) throw error;
       const settings = Object.fromEntries(data.map(item => [item.key, item.value]));
-      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {}, welcome = settings.welcome_offer || { enabled: true, coins: 50 }, stats = settings.site_stats || {};
+      const notice = settings.site_notice || {}, footerNotice = settings.footer_notice || {}, ads = settings.ads || {}, footer = settings.footer || {}, homepage = settings.homepage || {}, welcome = settings.welcome_offer || { enabled: true, coins: 50 }, stats = settings.site_stats || {}, supportChat = settings.support_chat || {};
       document.getElementById("noticeEnabled").checked = !!notice.enabled;
       document.getElementById("noticeTitle").value = notice.title || "";
       document.getElementById("noticeMessage").value = notice.message || "";
@@ -91,6 +97,8 @@
       document.getElementById("welcomeOfferEnabled").checked = welcome.enabled !== false;
       document.getElementById("welcomeOfferCoins").value = Number.isFinite(Number(welcome.coins)) ? Number(welcome.coins) : 50;
       document.getElementById("welcomeOfferMessage").value = welcome.message || "Welcome to BiliFollow! Your 50 free Coins are ready to use.";
+      document.getElementById("supportChatEnabled").checked = supportChat.enabled !== false;
+      document.getElementById("supportChatUrl").value = supportChat.embedUrl || "https://embed.tawk.to/6a9ade7201ac02344ed3b885/1k1mf9sgb";
       document.getElementById("adsEnabled").checked = !!ads.enabled;
       document.getElementById("adProvider").value = ads.provider === "adsterra" ? "adsterra-banner" : (ads.provider || "adsense");
       document.getElementById("adPlacement").value = ads.adPlacement || "top";
