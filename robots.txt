@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Private account, administrative, and recovery routes must not appear in search.
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /dashboard.html
+Disallow: /profile.html
+Disallow: /earn.html
+Disallow: /task.html
+Disallow: /promote.html
+Disallow: /my-tasks.html
+Disallow: /my-submissions.html
+Disallow: /review-submissions.html
+Disallow: /coin-history.html
+Disallow: /notifications.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /reset-password.html
+Disallow: /update-password.html
+
+Sitemap: https://bilifollow.online/sitemap.xml

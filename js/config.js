@@ -1,5 +1,9 @@
-const SUPABASE_URL = "https://rivmdyxytxiixxdkgufv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_k0C2qnTtys1UnMqEXKi2Eg_mPbiyuvG";
+const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
+
+// Paste your GA4 Measurement ID here after creating a Web stream in Analytics.
+// Example: const GOOGLE_ANALYTICS_ID = "G-ABC123DEF4";
+const GOOGLE_ANALYTICS_ID = "";
 
 const AD_CONFIG = { enabled: true, provider: "demo", adsenseClient: "", adsenseBannerSlot: "", networkScriptUrl: "", adsterraKey: "", adsterraWidth: 728, adsterraHeight: 90, directTitle: "BiliFollow test advertisement", directMessage: "Your advertisement will appear here. Replace this test ad in Control Center.", directUrl: "", directButton: "Learn more", popupHtml: "" };
 const SUPABASE_AUTH_OPTIONS = { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } };
@@ -24,6 +28,17 @@ window.showGuestPreview = function showGuestPreview() {
 };
 
 if (!document.querySelector('link[href="css/premium.css"]')) { const theme = document.createElement("link"); theme.rel = "stylesheet"; theme.href = "css/premium.css"; document.head.appendChild(theme); }
+
+if (/^G-[A-Z0-9]+$/i.test(GOOGLE_ANALYTICS_ID)) {
+  const analytics = document.createElement("script"); analytics.async = true;
+  analytics.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GOOGLE_ANALYTICS_ID)}`;
+  document.head.appendChild(analytics);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag(){ window.dataLayer.push(arguments); };
+  window.gtag("js", new Date()); window.gtag("config", GOOGLE_ANALYTICS_ID);
+}
+
+if (!document.querySelector('script[src="js/seo.js"]')) { const seo = document.createElement("script"); seo.src = "js/seo.js"; document.head.appendChild(seo); }
 
 document.addEventListener("DOMContentLoaded", () => {
   const route = window.location.pathname.split("/").pop() || "index";
