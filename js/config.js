@@ -17,7 +17,7 @@ if (!document.querySelector('link[rel="icon"]')) {
 
   gtag('config', 'G-EVYDLG8YXC');
 </script>
-const GOOGLE_ANALYTICS_ID = "";
+const GOOGLE_ANALYTICS_ID = "G-EVYDLG8YXC";
 
 const AD_CONFIG = { enabled: true, provider: "demo", adsenseClient: "", adsenseBannerSlot: "", networkScriptUrl: "", adsterraKey: "", adsterraWidth: 728, adsterraHeight: 90, directTitle: "BiliFollow test advertisement", directMessage: "Your advertisement will appear here. Replace this test ad in Control Center.", directUrl: "", directButton: "Learn more", popupHtml: "" };
 const SUPABASE_AUTH_OPTIONS = { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } };
