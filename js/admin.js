@@ -47,9 +47,11 @@
     });
     document.getElementById("homeForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      const fields = ["homePrimaryUrl", "homeSecondaryUrl", "homeCtaUrl"];
+      const fields = ["homePrimaryUrl", "homeSecondaryUrl", "homeCtaUrl", "homeVideoOneUrl", "homeVideoTwoUrl"];
       if (fields.some(id => { const value = document.getElementById(id).value.trim(); return value && !/^(https:\/\/|[a-z0-9-]+\.html$)/i.test(value); })) { say("Homepage links must use https:// or a local .html page."); return; }
-      await saveSetting("homepage", { badge: document.getElementById("homeBadge").value.trim(), title: document.getElementById("homeTitle").value.trim(), description: document.getElementById("homeDescription").value.trim(), primaryText: document.getElementById("homePrimaryText").value.trim(), primaryUrl: document.getElementById("homePrimaryUrl").value.trim(), secondaryText: document.getElementById("homeSecondaryText").value.trim(), secondaryUrl: document.getElementById("homeSecondaryUrl").value.trim(), howTitle: document.getElementById("homeHowTitle").value.trim(), howDescription: document.getElementById("homeHowDescription").value.trim(), ctaTitle: document.getElementById("homeCtaTitle").value.trim(), ctaDescription: document.getElementById("homeCtaDescription").value.trim(), ctaText: document.getElementById("homeCtaText").value.trim(), ctaUrl: document.getElementById("homeCtaUrl").value.trim() });
+      const videoUrls = ["homeVideoOneUrl", "homeVideoTwoUrl"];
+      if (videoUrls.some(id => { const value = document.getElementById(id).value.trim(); return value && !/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(value); })) { say("Video links must be valid YouTube links beginning with https://"); return; }
+      await saveSetting("homepage", { badge: document.getElementById("homeBadge").value.trim(), title: document.getElementById("homeTitle").value.trim(), description: document.getElementById("homeDescription").value.trim(), primaryText: document.getElementById("homePrimaryText").value.trim(), primaryUrl: document.getElementById("homePrimaryUrl").value.trim(), secondaryText: document.getElementById("homeSecondaryText").value.trim(), secondaryUrl: document.getElementById("homeSecondaryUrl").value.trim(), howTitle: document.getElementById("homeHowTitle").value.trim(), howDescription: document.getElementById("homeHowDescription").value.trim(), videoEnabled: document.getElementById("homeVideoEnabled").checked, videoTitle: document.getElementById("homeVideoTitle").value.trim(), videoDescription: document.getElementById("homeVideoDescription").value.trim(), videoOneTitle: document.getElementById("homeVideoOneTitle").value.trim(), videoOneUrl: document.getElementById("homeVideoOneUrl").value.trim(), videoTwoTitle: document.getElementById("homeVideoTwoTitle").value.trim(), videoTwoUrl: document.getElementById("homeVideoTwoUrl").value.trim(), ctaTitle: document.getElementById("homeCtaTitle").value.trim(), ctaDescription: document.getElementById("homeCtaDescription").value.trim(), ctaText: document.getElementById("homeCtaText").value.trim(), ctaUrl: document.getElementById("homeCtaUrl").value.trim() });
     });
     document.getElementById("adsForm").addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -126,6 +128,13 @@
       document.getElementById("homeSecondaryUrl").value = homepage.secondaryUrl || "";
       document.getElementById("homeHowTitle").value = homepage.howTitle || "";
       document.getElementById("homeHowDescription").value = homepage.howDescription || "";
+      document.getElementById("homeVideoEnabled").checked = !!homepage.videoEnabled;
+      document.getElementById("homeVideoTitle").value = homepage.videoTitle || "Learn BiliFollow in Minutes";
+      document.getElementById("homeVideoDescription").value = homepage.videoDescription || "Watch these short guides before you start.";
+      document.getElementById("homeVideoOneTitle").value = homepage.videoOneTitle || "How to Create a Task";
+      document.getElementById("homeVideoOneUrl").value = homepage.videoOneUrl || "";
+      document.getElementById("homeVideoTwoTitle").value = homepage.videoTwoTitle || "How to Complete a Task & Earn Coins";
+      document.getElementById("homeVideoTwoUrl").value = homepage.videoTwoUrl || "";
       document.getElementById("homeCtaTitle").value = homepage.ctaTitle || "";
       document.getElementById("homeCtaDescription").value = homepage.ctaDescription || "";
       document.getElementById("homeCtaText").value = homepage.ctaText || "";

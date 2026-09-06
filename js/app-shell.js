@@ -5,6 +5,7 @@
   const links = [
     ["dashboard.html", "🏠", "Dashboard"], ["earn.html", "🎯", "Task Board"],
     ["promote.html", "📣", "Create Task"], ["my-tasks.html", "📋", "My Posts"],
+    ["review-submissions.html", "📋", "Review Submissions"],
     ["my-submissions.html", "✅", "My Proofs"], ["coin-history.html", "🪙", "Coin History"],
     ["notifications.html", "🔔", "Notifications"], ["profile.html", "⚙️", "Settings"]
   ];

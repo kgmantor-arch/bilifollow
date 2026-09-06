@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://rivmdyxytxiixxdkgufv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_k0C2qnTtys1UnMqEXKi2Eg_mPbiyuvG";
+const SUPABASE_URL = "https://omergskloogfrggehkio.supabase.co";
+const SUPABASE_KEY = "sb_publishable_BVkBxkSBE0DQJn7fIhNhAg_meKolhZO";
 
 // Brand favicon for every page. Kept as local SVG so it needs no outside host.
 if (!document.querySelector('link[rel="icon"]')) {
